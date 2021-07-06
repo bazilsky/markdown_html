@@ -1,0 +1,142 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+
+<!-- Begin Jekyll SEO tag v2.7.1 -->
+<title>Remote access notes: | notes</title>
+<meta name="generator" content="Jekyll v3.9.0" />
+<meta property="og:title" content="Remote access notes:" />
+<meta property="og:locale" content="en_US" />
+<link rel="canonical" href="https://bazilsky.github.io/notes/" />
+<meta property="og:url" content="https://bazilsky.github.io/notes/" />
+<meta property="og:site_name" content="notes" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Remote access notes:" />
+<script type="application/ld+json">
+{"url":"https://bazilsky.github.io/notes/","@type":"WebSite","headline":"Remote access notes:","name":"notes","@context":"https://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#157878">
+    <link rel="stylesheet" href="/notes/assets/css/style.css?v=d3c53df2b5d4531daf3e4ead8204821d944902f1">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">notes</h1>
+      <h2 class="project-tagline"></h2>
+      
+        <a href="https://github.com/bazilsky/notes" class="btn">View on GitHub</a>
+      
+      
+    </section>
+
+    <section class="main-content">
+      <h1 id="remote-access-notes">Remote access notes:</h1>
+
+<p>https://www.environment.leeds.ac.uk/wiki/view/IT/LinuxRemote</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>openconnect <span class="nt">-u</span> eeara <span class="nt">--juniper</span> vpn.leeds.ac.uk
+</code></pre></div></div>
+<ul>
+  <li>
+    <p>connect using x2go</p>
+  </li>
+  <li>
+    <p>just connect via terminal</p>
+    <div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-A</span> eeara@foe-linux-02.leeds.ac.uk
+</code></pre></div>    </div>
+    <h1 id="arc-systems-and-training">arc systems and training:</h1>
+  </li>
+</ul>
+
+<blockquote>
+  <p>http://arc.leeds.ac.uk/</p>
+</blockquote>
+
+<h1 id="yum-update-s">yum update: s</h1>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum update
+</code></pre></div></div>
+
+<h1 id="printing-remotely">printing remotely</h1>
+<blockquote>
+  <p>lp -d myprint-staff -o ColorModel=Color -o KMDuplex=2Sided -o copies=1 FILENAME.pdf</p>
+</blockquote>
+
+<h1 id="tar-based-method-to-copy-from-monsoon">Tar based method to copy from monsoon</h1>
+
+<h2 id="transfer-from-institution-to-monsoon">Transfer <em>from</em> institution to MONSooN:</h2>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$cd</span> /path/to/localfiles
+
+<span class="nv">$tar</span> cf - myfiles | ssh anran@lander.monsoon-metoffice.co.uk <span class="s2">"ssh xcslc0 </span><span class="se">\"</span><span class="s2"> cd /path/to/destination/directory &amp;&amp; tar xvf - </span><span class="se">\"</span><span class="s2"> "</span>
+</code></pre></div></div>
+<p><del>/home/d04/anran/1850_emission_files/1850_greg</del></p>
+
+<h2 id="transfer-from-monsoon-to-institution">Transfer <em>from</em> MONSooN to Institution:</h2>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nv">$cd</span> /path/to/destination
+<span class="nv">$ssh</span> anran@lander.monsoon-metoffice.co.uk <span class="s2">"ssh xcslc0 </span><span class="se">\"</span><span class="s2"> cd /path/to/source/directory &amp;&amp; tar cf - myfiles </span><span class="se">\"</span><span class="s2"> "</span> | <span class="nb">tar </span>xvf -
+
+<span class="c">#An example Transfer from monsoon to institution</span>
+
+<span class="nv">$ssh</span> anran@lander.monsoon-metoffice.co.uk <span class="s2">"ssh xcslc1 </span><span class="se">\"</span><span class="s2"> cd /home/d04/anran/cylc-run/u-bx512/share/data/History_Data &amp;&amp; tar cf - *.pp </span><span class="se">\"</span><span class="s2"> "</span> | <span class="nb">tar </span>xvf -
+</code></pre></div></div>
+
+<h1 id="convert-model-output-to-pp-file">convert model output to pp file</h1>
+<blockquote>
+  <p>/projects/um1/vn10.8/xc40/utilities/um-convpp ax337a.pm2013dec ax337a.pm2013dec.pp</p>
+</blockquote>
+
+<p><del>/home/d04/anran/cylc-run/u-bb862/share/data/History_Data</del></p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>~~ssh anran@lander.monsoon-metoffice.co.uk “ssh xcslc0 " cd /home/d04/anran/cylc-run/u-bd918/share/data/History_Data &amp;&amp; tar cf - *.pp " “</td>
+      <td>tar xvf -~~</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="moose-access">MOOSE ACCESS</h1>
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>moo mkset <span class="nt">-p</span> <span class="nt">--project-ukca</span> <span class="nt">--single-copy</span> :/crum/u-ca123
+
+moo put <span class="k">*</span>.pp :crum/u-ca123/apm.pp/
+
+moo get :/crum/u-ca123/apm.pp/<span class="k">*</span>.pp <span class="nb">.</span>      <span class="c"># the full stop at the end extracts all files to the current directory </span>
+</code></pre></div></div>
+
+<h1 id="mark-down-image-testing-s">mark down image testing s</h1>
+
+<p><img src="/notes/images/indirect.png" alt="alt text" /></p>
+
+<h1 id="vimrc-for-python-indentation">vimrc for python indentation</h1>
+
+<p>Copy of following code block into your vimrc file and you’re good to go. The <code class="language-plaintext highlighter-rouge">set mouse =a</code> command is only for enabling mouse click on vim. You can disregard that if you want.</p>
+
+<div class="language-sh highlighter-rouge"><div class="highlight"><pre class="highlight"><code>syntax <span class="nb">enable 
+set </span><span class="nv">mouse</span><span class="o">=</span>a
+<span class="nb">set </span><span class="nv">tabstop</span><span class="o">=</span>4
+<span class="nb">set </span><span class="nv">shiftwidth</span><span class="o">=</span>4
+<span class="nb">set </span>expandtab
+<span class="nb">set </span><span class="nv">softtabstop</span><span class="o">=</span>4
+syntax on
+<span class="nb">set </span>number 
+filetype indent on
+<span class="nb">set </span>autoindent
+
+</code></pre></div></div>
+
+
+      <footer class="site-footer">
+        
+          <span class="site-footer-owner"><a href="https://github.com/bazilsky/notes">notes</a> is maintained by <a href="https://github.com/bazilsky">bazilsky</a>.</span>
+        
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+      </footer>
+    </section>
+
+    
+  </body>
+</html>
